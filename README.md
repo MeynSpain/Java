@@ -4,5 +4,6 @@
 https://www.youtube.com/watch?v=Kmgo00avvEw&t=3077s
 
 ## Сайтик чтобы удалить фон
-https://www.remove.bg/ru/upload "\n"
+https://www.remove.bg/ru/upload  
+
 https://www.youtube.com/watch?v=sZgXUK5L3Ss
