@@ -72,7 +72,8 @@ POP - это класс общий который будет хранить в �
         POP C = weat.fromJson(response.body(), POP.class);
         System.out.println("Температура: " + C.main.temp);
 ```        
-
+## Подгрузить бибиотеку GSON можно вот по этой ссылочке  
+https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
     
  
 
