@@ -35,6 +35,37 @@ https://openweathermap.org/api
  HttpResponse<String> response =
                 client.send(wheater_request, HttpResponse.BodyHandlers.ofString()); //отправляем запрос и сохраняем в response
 ```
-В данном случае мы отправили и засунули содержимое в ``` HttpResponse<String> response ```, после чего дальше будем работать уже с файлом Json который лежит в переменной ``` response ```
+В данном случае мы отправили и засунули содержимое в ``` HttpResponse<String> response ```, после чего дальше будем работать уже с файлом Json который лежит в переменной ``` response ```.  
+Чтобы все это распарсить(разделить) и найти нужные нам данные используем библиотеку ```GSON```.  
+Создадим 2 класса:
+```java
+ class Wheater{
+        public double temp;
+        public double feels_like;
+        public double temp_min;
+        public double temp_max;
+        public int pressure;
+        public int humidity;
+
+    }
+    
+   class POP{
+        public Coord coord;
+        public Wheater main;
+    }
+```
+POP - это класс общий который будет хранить в себе подклассы. Сейчас нам нужна погода. В файле Json нужная нам информация о температуре хранится в разделе который называется ```main``` поэтому создаем объект класса ```Wheater``` внутри класса ```POP```, ```coord``` там ширина и долгота, но это пока не важно
+```json
+"main": {
+        "temp": -7.24,
+        "feels_like": -13.18,
+        "temp_min": -7.24,
+        "temp_max": -7.06,
+        "pressure": 1011,
+        "humidity": 53
+    },
+    ```
+    
+ 
 
 
