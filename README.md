@@ -28,7 +28,6 @@ https://reqbin.com/
                 '''
 
 
-```javascript
-var s = "Подсветка JavaScript";
+```java
 alert(s);
 ```
