@@ -16,6 +16,9 @@ https://mvnrepository.com/artifact/org.jsoup/jsoup/1.14.3
 ## Online тест API  
 https://reqbin.com/  
 # Подключение по API  
+Создаем подключение к какому либо сайту, для данного сайта нужен токен(клю) для подключения.  
+Его можно получить зарегестрировавшись на сайте в качестве разработчика вот по этой ссылочке  
+https://openweathermap.org/api
 ```java
         //город и токен
         String city = "Chita";
@@ -27,5 +30,11 @@ https://reqbin.com/
                 .build();       //ССылка для запроса
                 '''
 ```
+Далее мы должны отправить запрос на сайт и получить от туда json файл
+```java
+ HttpResponse<String> response =
+                client.send(wheater_request, HttpResponse.BodyHandlers.ofString()); //отправляем запрос и сохраняем в response
+```
+В данном случае мы отправили и засунули содержимое в ```java HttpResponse<String> response ```, после чего дальше будем работать уже с файлом Json который лежит в переменной ```java response ```
 
 
