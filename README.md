@@ -35,6 +35,6 @@ https://openweathermap.org/api
  HttpResponse<String> response =
                 client.send(wheater_request, HttpResponse.BodyHandlers.ofString()); //отправляем запрос и сохраняем в response
 ```
-В данном случае мы отправили и засунули содержимое в ```java HttpResponse<String> response ```, после чего дальше будем работать уже с файлом Json который лежит в переменной ```java response ```
+В данном случае мы отправили и засунули содержимое в ``` HttpResponse<String> response ```, после чего дальше будем работать уже с файлом Json который лежит в переменной ``` response ```
 
 
