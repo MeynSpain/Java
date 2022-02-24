@@ -26,3 +26,9 @@ https://reqbin.com/
                 .uri(URI.create("https://api.openweathermap.org/data/2.5/weather?q=" + city +"&appid=" + wheather_token + "&units=metric"))
                 .build();       //ССылка для запроса
                 '''
+
+
+```javascript
+var s = "Подсветка JavaScript";
+alert(s);
+```
