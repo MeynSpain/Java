@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3" use-changelog="false" last-position="0,52" last-zoom="0.85" max-obj-count="4"
+	 default-schema="public" default-owner="postgres">
+<database name="Holding_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Enterprise" layer="0" alias="Предприятие" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="280" y="220"/>
+	<column name="id" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="Name" alias="Название предприятия" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Banking_details" alias="Банковские реквизиты">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Phone" alias="Номер телефона">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Contact_person" alias="Контактное лицо">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Enterprise_pk" type="pk-constr" table="public.&quot;Enterprise&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Report" layer="0" alias="Отчет предприятия" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="680" y="220"/>
+	<column name="Quarter" alias="Квартал" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="Income" alias="Доходы">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Expenses" alias="Расходы">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Marke_ price" alias="Рыночная стоимость предриятия">
+		<type name="text" length="0"/>
+	</column>
+	<column name="Stock_price" alias="Цена акций">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="Report_pk" type="pk-constr" table="public.&quot;Report&quot;">
+		<columns names="Quarter" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_Enterprise" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Enterprise_fk" index="1"/>
+		<object name="Report_uq" index="2"/>
+	</customidxs>
+</table>
+
+<relationship name="Финансовый отчет предприятия" type="rel11" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#277ae3"
+	 src-table="public.&quot;Enterprise&quot;"
+	 dst-table="public.&quot;Report&quot;"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
