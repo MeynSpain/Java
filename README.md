@@ -15,6 +15,8 @@ https://www.youtube.com/watch?v=sZgXUK5L3Ss
 https://mvnrepository.com/artifact/org.jsoup/jsoup/1.14.3  
 ## Online тест API  
 https://reqbin.com/  
+## Ссылка с открытыми API  
+https://github.com/public-apis/public-apis
 # Подключение по API  
 Создаем подключение к какому либо сайту, для данного сайта нужен токен(клю) для подключения.  
 Его можно получить зарегестрировавшись на сайте в качестве разработчика вот по этой ссылочке  
