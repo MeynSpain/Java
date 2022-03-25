@@ -82,6 +82,24 @@ https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
 Как же все таки это все сделать?  
 Да вот так:
 ```java
+public class User implements Serializable {
+    int lifeLevel;
+    Sword sword = new Sword();
+
+    //Поля static и transient не сеарилизуются
+    //transient поля после того как мы достанем объект из файла будут иметь значения по умолчанию
+}
+```   
+У нас есть класс ```User``` и у него есть поля ```lifeLevel```, предположим, что это жизни персонажа, так же у него есть поле ```sword```, это поле как видно из названия отвечает за меч игрока, и как видно это объект другого класса
+```java
+public class Sword implements Serializable {
+    int level;
+    int damage;
+
+}
+```  
+Который в свою очередь имеет поля ```level``` и ```damage```. Также видно что оба класса реализуют класс ```Serializable```. Вот как раз эта реализация и будет показывать, что эти 2 класса могут быть ``Сериализованы``
+
 
 
     
