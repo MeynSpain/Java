@@ -91,23 +91,52 @@ public class User implements Serializable {
 }
 ```   
 У нас есть класс ```User``` и у него есть поля ```lifeLevel```, предположим, что это жизни персонажа, так же у него есть поле ```sword```, это поле как видно из названия отвечает за меч игрока, и как видно это объект другого класса
-`java
+```java
 public class Sword implements Serializable {
     int level;
     int damage;
 
 }
-` 
+```
 Который в свою очередь имеет поля ```level``` и ```damage```. Также видно что оба класса реализуют класс ```Serializable```. Вот как раз эта реализация и будет показывать, что эти 2 класса могут быть `Сериализованы`.   
 Т.к. это обычный пример, то сделаем все простенько. И так, мы создали 2 класса и показали, что объекты этих классов могут быть сериализованы, простыми словами `записаны целиком в файл`. Теперь осталось создать объект и записать его, так чего же мы ждем?   
-`java
-        User user = new User();
+```java
+        User user = new User();         //Создаем игрока
 
-        user.lifeLevel = 55;
+        //Устанавливаем значения жизней и показателей меча
+        user.lifeLevel = 55;            
         user.sword.damage = 100;
         user.sword.level = 10;
+        
+        //Запись в файл
+        FileOutputStream filewrite = new FileOutputStream("user");      //Создаем файл для записи(если уже есть файл, то он таким образом перезапишется
+        //FileOutputStream filewrite = new FileOutputStream("user", true);      //Таким образом откроет для записи в конеце файла и сохранит, то что уже было записано ранее
+        
+        ObjectOutputStream object = new ObjectOutputStream(filewrite);  //Создаем объект для записи объектов в файл
+        object.writeObject(user);       //теперь просто записываем наш объект
+        object.close();         //и закрываем файл
 
-`
+```
+Все, после этого в файл запишется объект целиком.  
+Но ведь надо как то достать этот объект из файл. Но и тут нет ничего сложного. Для этого и существует `Десериализация`.  
+Вот сразу код
+```java
+//Чтение из файла
+        FileInputStream fileread = new FileInputStream("user"); //Открываем файл для чтения
+
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileread);  //создаем объект для чтения именно объектов
+        User user1 = (User) objectInputStream.readObject();     //Создаем новый объект игрока и записываем его из файла
+        objectInputStream.close();      //Не забываем закрыть файл
+       
+       //Просто вывод в консоль
+        System.out.println(user1.lifeLevel);
+        System.out.println(user1.sword.level);
+        System.out.println(user1.sword.damage);
+```
+Чуть не забыл, все эти открытия файлов, постоянно требуют обработки исключений, мне было лень и я прокинул их выше, поэтому главная функция у меня выглядит так
+```java
+ public static void main(String[] args) throws IOException, ClassNotFoundException {
+```
 
     
  
