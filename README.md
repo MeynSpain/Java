@@ -75,7 +75,9 @@ POP - это класс общий который будет хранить в �
         System.out.println("Температура: " + C.main.temp);
 ```        
 ## Подгрузить бибиотеку GSON можно вот по этой ссылочке  
-https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
+https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0  
+## Сериализация объектов  
+
     
  
 
