@@ -1,5 +1,6 @@
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleBot {
@@ -45,16 +46,18 @@ public class SimpleBot {
         put("как\\sоно", "howareyou");
         put("как\\s.*дела", "howareyou");
         put("как\\s.*жизнь", "howareyou");
+        //Что я делаю
+        put("зачем\\s+я\\s.*тут", "whatdoidoing");
+        put("зачем\\s+я\\s.*здесь", "whatdoidoing");
+        put("что\\s+я\\s.*делаю", "whatdoidoing");
+        put("чем\\s+я\\s.*занимаюсь", "whatdoidoing");
+
         // Что делаешь
         put("зачем\\s.*тут", "whatdoyoudoing");
         put("зачем\\s.*здесь", "whatdoyoudoing");
         put("что\\s.*делаешь", "whatdoyoudoing");
         put("чем\\s.*занимаешься", "whatdoyoudoing");
-        //Что я делаю
-        put("зачем\\s+я\\s.*тут", "whatdoidoing");
-        put("зачем\\ss+я\\s.*здесь", "whatdoidoing");
-        put("что\\ss+я\\s.*делаю", "whatdoidoing");
-        put("чем\\ss+я\\s.*занимаюсь", "whatdoidoing");
+
 
         // whatdoyoulike
         put("что\\s.*нравится", "whatdoyoulike");
@@ -81,21 +84,9 @@ public class SimpleBot {
 
         //Простые мат операции
             //Умножение
-        put("умножь\\s+\\d+\\s+на\\s+\\d+", "*");
-        put("перемножь\\s+\\d+\\s+на\\s+\\d+", "*");
-        put("умножь\\s+\\d+\\s+и\\s+\\d+", "*");
-        put("перемножь\\s+\\d+\\s+и\\s+\\d+", "*");
-            //Деление
-        put("раздели\\s+\\d+\\s+на\\s+\\d+", "/");
-        put("подели\\s+\\d+\\s+на\\s+\\d+", "/");
-        put("раздели\\s+\\d+\\s+и\\s+\\d+", "/");
-        put("подели\\s+\\d+\\s+и\\s+\\d+", "/");
-            //Сложение
-        put("сложи\\s+\\d+\\s+с\\s+\\d+", "+");
-        put("сложи\\s+\\d+\\s+и\\s+\\d+", "+");
-            //Вычитание
-        put("вычти\\s+\\d+\\s+на\\s+\\d+", "-");
-        put("вычти\\s+\\d+\\s+и\\s+\\d+", "-");
+        put("посчитай", "calculator");
+        put("вычисли", "calculator");
+        put("сколько\\s+будет", "calculator");
 
     }};
 
@@ -115,6 +106,9 @@ public class SimpleBot {
     private Pattern pattern;    //шаблон для поиска
     private Random random;      //чтобы рандомить ответ, если не соответсвует шаблону
     private Calendar calendar;  //Для получения даты
+    private Calculator calculator;
+    private Matcher matcher;
+    List<DataMessage> history_messages = new ArrayList<>();
 
     SimpleBot()
     {
@@ -129,10 +123,12 @@ public class SimpleBot {
     private String getDate()
     {
         calendar = Calendar.getInstance();  //Получаем дату
-        SimpleDateFormat format = new SimpleDateFormat("Дата: dd-MM-yyyy\nВремя: HH:mm");   //создаем нужный шаблон
-
-        return format.format(calendar.getTime());   //возвращаем отфарматированную дату
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");   //создаем нужный шаблон
+        String str = format.format(calendar.getTime());
+        return str;//возвращаем отфарматированную дату
     }
+
+
 
 
     /**
@@ -141,8 +137,10 @@ public class SimpleBot {
      * @param msg сообщение которое передается боту, которое будет обрабатываться
      * @return String - ответ бота
      */
-    public String answer(String msg)
+    public String answer(String msg, String author)
     {
+
+        history_messages.add(new DataMessage(getDate(), author, msg));   //Добавляем в историю сообщение пользователя
 
         String say;
         if (msg.trim().endsWith("?"))       //удаляем начальные и конечные пробелы
@@ -160,32 +158,56 @@ public class SimpleBot {
         for (Map.Entry<String, String> entry: PATTERNS_FOR_ANALYSIS.entrySet())
         {
             pattern = Pattern.compile(entry.getKey());          //ищем нужный нам шаблон
-            if (pattern.matcher(message).find())                //если нашли такой шаблон
+            matcher = pattern.matcher(message);
+//            if (pattern.matcher(message).find())                //если нашли такой шаблон
+            if (matcher.find())                //если нашли такой шаблон
             {
                 //Дата и время
                 if (entry.getValue().equals("whattime"))        //Если запрос был на время
                 {
-                    return getDate();                           //То возвращаем время
+                    say = getDate();                           //То возвращаем время
+                    break;
                 }
                 //Погода
                 if (entry.getValue().equals("wheather"))
                 {
                     Internet weather = new Internet();
-                    return weather.weather_info();
+                    say = weather.weather_info();
+                    break;
                 }
                 //Валюта
                 if (entry.getValue().equals("curs"))
                 {
                     Internet curs = new Internet();
-                    return "Курс на вчерашний день:\n" + curs.USD_info() + "\n" + curs.EUR_info();
+                    say = curs.USD_info() + "\n" + curs.EUR_info();
+                    break;
+                }
+                //Вычисления
+                if (entry.getValue().equals("calculator"))
+                {
+                    calculator = new Calculator();
+
+
+
+                        String buf = message.substring(matcher.end(), message.length());
+                        try {
+                            say = String.valueOf(calculator.result(buf));
+                            break;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
                 }
 
-                return ANSWERS_BY_PATTERNS.get(entry.getValue());   //и обращаемся по найденному к ответам
+
+
+                say = ANSWERS_BY_PATTERNS.get(entry.getValue());   //и обращаемся по найденному к ответам
             }
 
         }
 
-
+        history_messages.add(new DataMessage(getDate(), "Bot", say));
         return say;
     }
 

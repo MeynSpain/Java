@@ -5,6 +5,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * Класс для интернет запросов.
+ * Можно посмотреть погоду в чите, курс доллара и евро,
+ * мб потом еще что нибудь добавлю
+ */
 public class Internet {
 
 
@@ -24,11 +29,12 @@ public class Internet {
 
         JSONObject parse = new JSONObject(info);      //парсим полученный json файл
 
-        info =   "Температура:" + parse.getJSONObject("main").getDouble("temp")
-                +"\nОщущается:" + parse.getJSONObject("main").getDouble("feels_like")
-                +"\nМаксимум:" + parse.getJSONObject("main").getDouble("temp_max")
-                +"\nМинимум:" + parse.getJSONObject("main").getDouble("temp_min")
-                +"\nДавление:" + parse.getJSONObject("main").getDouble("pressure");
+        info =   "Температура:" + parse.getJSONObject("main").getDouble("temp") + " °C"
+                +"\nОщущается:" + parse.getJSONObject("main").getDouble("feels_like") + " °C"
+                +"\nМаксимум:" + parse.getJSONObject("main").getDouble("temp_max") + " °C"
+                +"\nМинимум:" + parse.getJSONObject("main").getDouble("temp_min") + " °C"
+                +"\nДавление:" + parse.getJSONObject("main").getDouble("pressure")
+                +"\nВетер:" + parse.getJSONObject("wind").getDouble("speed") + " м/c";
         return info;
     }
 
@@ -36,7 +42,7 @@ public class Internet {
     {
         String info = getContent("https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd.json");   //запрос на доллар
         JSONObject parse = new JSONObject(info);    //парсим полученный json файл
-        info = "1 Доллар: " + parse.getJSONObject("usd").getDouble("rub") + " руб.";
+        info = "На " + parse.get("date") + "\n1 Доллар: " + parse.getJSONObject("usd").getDouble("rub") + " руб.";
 
         return info;
     }

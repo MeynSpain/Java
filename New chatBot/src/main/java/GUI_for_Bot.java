@@ -3,6 +3,7 @@ import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 public class GUI_for_Bot extends JFrame implements ActionListener
 {
@@ -90,7 +91,18 @@ public class GUI_for_Bot extends JFrame implements ActionListener
             textArea_dialogue.repaint();
 //            textArea_dialogue.setSelectedTextColor(Color.WHITE);
             textArea_dialogue.setForeground(Color.white);
-            textArea_dialogue.append(sbot.answer(textField_message.getText()) + "\n");
+
+            String message = textField_message.getText();
+
+            Calendar time = Calendar.getInstance();
+            sbot.history_messages.add(new DataMessage("time", "admin", message));//добавили в историю сообщение пользователя
+
+
+            String answer = sbot.answer(message, "admin") + "\n";
+
+            time = Calendar.getInstance();
+            sbot.history_messages.add(new DataMessage("time", "Bot", answer));
+            textArea_dialogue.append(answer + "\n");
         }
         textField_message.setText("");
     }
