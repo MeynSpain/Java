@@ -194,6 +194,7 @@ public class SimpleBot {
                             say = String.valueOf(calculator.result(buf));
                             break;
                         } catch (Exception e) {
+
                             e.printStackTrace();
                         }
 

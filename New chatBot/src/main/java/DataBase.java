@@ -5,9 +5,11 @@ public class DataBase{
 
     private final String DB_user_name = "postgres";
 
-    private final String DB_password = "maddyson228";
+    private final String DB_password = "NYf3b&fh.d";
 
-    private  final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/Chat";
+//    private final String DB_password = "maddyson228";
+
+    private  final String DB_URL = "jdbc:postgresql://194.135.22.132:5432/chat";
 
     private Connection connection = null;
 
@@ -17,6 +19,8 @@ public class DataBase{
         connection = DriverManager.getConnection(DB_URL, DB_user_name, DB_password); //подключаемся к базе данных
 
     }
+
+
 
     /**
      * Берем историю сообщений бота и добавляем в базу данных
@@ -30,7 +34,7 @@ public class DataBase{
             if (connection != null)
                 System.out.println("Законнектился");
             //объект который умеет отправлять запросы к БД
-            String sql = "INSERT INTO history(date, author, msg) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO history(date, author, message) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
             for (DataMessage dataBuffer: bot.history_messages)
             {
@@ -47,6 +51,7 @@ public class DataBase{
         }
         catch (SQLException e)
         {
+            System.out.println(e);
             e.printStackTrace();
 
         }
@@ -75,7 +80,7 @@ public class DataBase{
                 DataMessage dataBuffer = new DataMessage(
                         resultSet.getString("date"),
                         resultSet.getString("author"),
-                        resultSet.getString("msg")
+                        resultSet.getString("message")
                 );
 
                 //А теперь добавляем этот объект в историю сообщений бота
@@ -86,6 +91,7 @@ public class DataBase{
         }
         catch (SQLException e)  //ловим исключение, если не подключились к базе данных или что то другое пошло не так
         {
+            System.out.println(e);
             e.printStackTrace();
         }
     }

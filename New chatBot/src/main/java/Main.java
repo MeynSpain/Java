@@ -62,12 +62,12 @@ public class Main {
  //cos60+2*sin40+ln23
 
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 2; i++)
         {
             String quest = scanner1.nextLine();
             System.out.println(bot.answer(quest, "admin"));
         }
-/*
+
         DataBase dataBase = new DataBase();
         dataBase.DB_Insert(bot);
 
@@ -79,7 +79,7 @@ public class Main {
         {
             System.out.println(dataMessage.date +"//////" + dataMessage.author +"//////" + dataMessage.message);
         }
-*/
+
 
 
 
