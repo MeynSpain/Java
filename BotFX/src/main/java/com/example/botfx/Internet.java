@@ -2,8 +2,12 @@ package com.example.botfx;
 
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -15,6 +19,19 @@ import java.net.URLConnection;
 public class Internet {
 
 
+    /**
+     * Открывает браузер с открытым поисковыми запросом, который указан в строке
+     * @param str - поисковый запрос
+     */
+    void search(String str) throws URISyntaxException, IOException {
+
+        Desktop desktop = Desktop.getDesktop(); //Получаем доступ
+
+        str = str.replaceAll("\\s+", "+");  //Все пробелы заменяем +
+
+        desktop.browse(new URI("https://www.google.com/search?q=" + str));  //Открываем браузер с запросом
+
+    }
 
     /**
      * Делает запрос на openweather и парсит полученный json файл и получает строку вида:

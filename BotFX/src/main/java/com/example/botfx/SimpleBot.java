@@ -1,5 +1,7 @@
 package com.example.botfx;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -60,6 +62,13 @@ public class SimpleBot {
         put("что\\s.*делаешь", "whatdoyoudoing");
         put("чем\\s.*занимаешься", "whatdoyoudoing");
 
+        //Спасибо
+        put("пасибо", "thanks");
+        put("пасибки", "thanks");
+        put("благодарю", "thanks");
+        put("благодарен", "thanks");
+        put("от души", "thanks");
+
 
         // whatdoyoulike
         put("что\\s.*нравится", "whatdoyoulike");
@@ -80,10 +89,17 @@ public class SimpleBot {
         put("до\\s.*свидания", "bye");
         put("пока", "bye");
 
+        //
+
         //Интернет запросы
             //Погода
         put("как.*погода", "wheather");
         put("курс валют", "curs");
+            //Запросы в браузер
+        put("найди", "search");
+        put("найти", "search");
+        put("поиск", "search");
+        put("поищи", "search");
 
         //Простые мат операции
             //Умножение
@@ -104,6 +120,7 @@ public class SimpleBot {
         put("iamfeelling", "Как давно это началось? Расскажите чуть подробнее.");
         put("yes", "Согласие есть продукт при полном непротивлении сторон.");
         put("bye", "До свидания. Надеюсь, ещё увидимся.");
+        put("thanks", "Да не за что, обращайся.");
     }};
 
     private Pattern pattern;    //шаблон для поиска
@@ -192,19 +209,34 @@ public class SimpleBot {
                 if (entry.getValue().equals("calculator"))
                 {
                     calculator = new Calculator();
+                    String buf = message.substring(matcher.end(), message.length());
+                    try {
+                        say = String.valueOf(calculator.result(buf));
+                        break;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //Поисковый запрос
+                if (entry.getValue().equals("search"))
+                {
+                    //Вырезаем сам поисковый запрос
+                    String request = message.substring(matcher.end(), message.length());
 
+                    Internet search = new Internet();
 
+                    try {
+                        search.search(request);
+                        say = "Вот что удалось найти";
 
-                        String buf = message.substring(matcher.end(), message.length());
-                        try {
-                            say = String.valueOf(calculator.result(buf));
-                            break;
-                        } catch (Exception e) {
-
-                            e.printStackTrace();
-                        }
-
-
+                        break;
+                    } catch (URISyntaxException e) {
+                        say = "Не получилось найти, прошу прощения :(";
+                        break;
+                    } catch (IOException e) {
+                        say = "Что то пошло не так, сорян :(";
+                        break;
+                    }
                 }
 
 
