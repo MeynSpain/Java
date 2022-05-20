@@ -2,13 +2,17 @@ package com.example.databasetest;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -65,6 +69,9 @@ public class Controller {
     @FXML
     private TextField textField_name;
 
+    @FXML
+    private TextField textField_search;
+
     private Parent root;
 
     private Controller_Edit controller_edit;
@@ -119,12 +126,75 @@ public class Controller {
         col_contact_person.setCellValueFactory(new PropertyValueFactory<Enterpise, String>("contact_person"));
 
         initLoader();
+        init_double_click();
+
 
 
         table.setItems(list_Enterprise);
-        System.out.println(list_Enterprise.get(list_Enterprise.size() - 1).getId());
+        init_search();
 
+    }
 
+    /**
+     * Включение возможности поиска в таблице
+     */
+    private void init_search()
+    {
+        FilteredList<Enterpise> filteredList = new FilteredList<>(list_Enterprise, b->true);
+
+        textField_search.textProperty().addListener((observable, oldValue, newValue) ->
+        {
+            filteredList.setPredicate(enterpise ->
+            {
+                if (newValue == null || newValue.isEmpty())
+                {
+                    return true;
+                }
+
+                String filter = newValue.toLowerCase().replaceAll("\\s+", " ");
+
+                if(enterpise.getBanking_details().toLowerCase().indexOf(filter) != -1)
+                {
+                    return true;
+                }
+                else if (enterpise.getId().toString().indexOf(filter) != -1)
+                {
+                    return true;
+                }
+                else if (enterpise.getContact_person().toLowerCase().indexOf(filter) != -1)
+                {
+                    return true;
+                }
+                else if (enterpise.getName().toLowerCase().indexOf(filter) != -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+        });
+
+        SortedList<Enterpise> sortedList = new SortedList<>(filteredList);
+
+        sortedList.comparatorProperty().bind(table.comparatorProperty());
+
+        table.setItems(sortedList);
+    }
+
+    private void init_double_click()
+    {
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getClickCount() == 2)
+                {
+                    System.out.println("Двойной клик");
+                    MenuItem_edit_click();
+                }
+            }
+        });
     }
 
     /**
@@ -184,9 +254,9 @@ public class Controller {
 
     /**
      * Редактирование записи
-     * @param actionEvent
+     * @param
      */
-    public void MenuItem_edit_click(ActionEvent actionEvent)
+    public void MenuItem_edit_click()
     {
         //получаем выбранную запись
         Enterpise enterpise = table.getSelectionModel().getSelectedItem();
