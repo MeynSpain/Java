@@ -13,14 +13,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -87,9 +86,78 @@ public class Controller {
     Connection connection;
     SqlQuery query = new SqlQuery();
 
+    FileChooser fileChooser = new FileChooser();
+
+    /**
+     * Вызывается диалоговое окно для открытия файла
+     */
+    @FXML
+    void openFile()
+    {
+        //Заголовок проводника
+        fileChooser.setTitle("Выберите файл, который хотите открыть");
+
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+        //Доступные разрешения файлов для выбора
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
+
+        String fileName = String.valueOf(fileChooser.showOpenDialog(null));
+
+        try {
+            //Закрываем старое соединение
+            connection.close();
+
+            //И делаем новое, к выбранной базе данных
+            connection = DB_Connect.connect(fileName);
+
+            //Заполняем лист
+            MyList.fillObservableList(list_Enterprise, connection);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Вызывается диалоговое окно для создания файла
+     */
+    @FXML
+    void createFile()
+    {
+        fileChooser.setTitle("Введите название файла и выберите дирректорию, где хотите создать файл");
+
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
+        String filename = String.valueOf(fileChooser.showSaveDialog(null));
+
+        try {
+
+            //Закрываем старое соединение
+            connection.close();
+
+            //Создаем новое
+            connection = DB_Connect.newConnect(filename);
+
+            //Создаем таблицу в новой базе
+            query.CreateTable(connection);
+
+            //Заполняем лист
+            MyList.fillObservableList(list_Enterprise, connection);
+
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+    }
+
     @FXML
     void initialize()
     {
+
+
         //Устанавливаем возможность выбирать больше одной записи
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 

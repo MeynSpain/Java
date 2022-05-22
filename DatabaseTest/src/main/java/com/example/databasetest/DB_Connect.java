@@ -20,6 +20,18 @@ public class DB_Connect {
         return connection;
     }
 
+    public static Connection newConnect(String FileName) throws SQLException {
+        String newUrl = "jdbc:sqlite:" + FileName;
+        Connection connection = DriverManager.getConnection(newUrl);
+        return connection;
+    }
+
+    public static Connection connect(String FileName) throws SQLException
+    {
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + FileName);
+        return connection;
+    }
+
 
 
 }

@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="242.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databasetest.Controller_Edit">
    <children>
-      <TextField fx:id="textField_name" layoutX="47.0" layoutY="43.0" promptText="%key.textField.name" />
+      <TextField fx:id="textField_name" style="" layoutX="47.0" layoutY="43.0" promptText="%key.textField.name" />
       <TextField fx:id="textField_bank" layoutX="47.0" layoutY="94.0" promptText="%key.textField.bank_details" />
       <TextField fx:id="textField_contact" layoutX="47.0" layoutY="146.0" promptText="%key.textField.contact" />
       <Button fx:id="button_edit" onAction="#button_edit_click" layoutX="65.0" layoutY="205.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="%key.button.edit" />

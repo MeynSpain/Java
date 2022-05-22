@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SqlQuery {
 
@@ -88,6 +89,26 @@ public class SqlQuery {
     String getDelete(Integer id)
     {
         return "DELETE FROM \"Enterprise\" WHERE id = " + id;
+    }
+
+
+    /**
+     * Создание таблицы в базе данных
+     * @param connection уже подключенный к базе данных
+     */
+    void CreateTable(Connection connection) throws SQLException
+    {
+        Statement statement;
+        statement = connection.createStatement();
+
+        String create = "CREATE TABLE \"Enterprise\" (\n" +
+                "\t\"id\"\tinteger,\n" +
+                "\t\"name\"\ttext,\n" +
+                "\t\"banking_details\"\ttext,\n" +
+                "\t\"contact_person\"\ttext,\n" +
+                "\tPRIMARY KEY(\"id\" AUTOINCREMENT)\n" +
+                ");";
+        statement.executeUpdate(create);
     }
 
 
