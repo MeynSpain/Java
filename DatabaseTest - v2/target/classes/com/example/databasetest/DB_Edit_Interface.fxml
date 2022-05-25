@@ -3,13 +3,29 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" style="-fx-background-color: #424242" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="264.0" prefWidth="242.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databasetest.Controller_Edit">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="264.0" minWidth="242.0" prefHeight="264.0" prefWidth="242.0" style="-fx-background-color: #424242" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.databasetest.Controller_Edit">
    <children>
-      <TextField fx:id="textField_name" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" layoutX="47.0" layoutY="43.0" promptText="%key.textField.name" />
-      <TextField fx:id="textField_bank" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" layoutX="47.0" layoutY="94.0" promptText="%key.textField.bank_details" />
-      <TextField fx:id="textField_contact" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" layoutX="47.0" layoutY="146.0" promptText="%key.textField.contact" />
-      <Button fx:id="button_edit" style="-fx-background-radius: 30" onAction="#button_edit_click" layoutX="65.0" layoutY="205.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="%key.button.edit" />
+      <TextField fx:id="textField_name" layoutX="47.0" layoutY="43.0" promptText="%key.textField.name" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="46.0" />
+      <TextField fx:id="textField_bank" layoutX="47.0" layoutY="94.0" promptText="%key.textField.bank_details" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="46.0" />
+      <TextField fx:id="textField_contact" layoutX="47.0" layoutY="146.0" promptText="%key.textField.contact" style="-fx-text-fill: white ;-fx-background-color: #696969; -fx-background-radius: 30;" AnchorPane.leftAnchor="47.0" AnchorPane.rightAnchor="46.0" />
+      <Button fx:id="button_edit" layoutX="65.0" layoutY="205.0" mnemonicParsing="false" onAction="#button_edit_click" prefHeight="25.0" prefWidth="112.0" style="-fx-background-radius: 30" text="%key.button.edit" />
+      <Text fill="WHITE" layoutX="59.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Название компании" AnchorPane.leftAnchor="58.6962890625" AnchorPane.rightAnchor="59.3037109375">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="14.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="50.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Банковские реквизиты" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="48.9716796875">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="14.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="63.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Контактное лицо" AnchorPane.leftAnchor="58.6962890625" AnchorPane.rightAnchor="59.607421875">
+         <font>
+            <Font name="Times New Roman Bold Italic" size="14.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

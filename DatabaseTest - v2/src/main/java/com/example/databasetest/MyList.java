@@ -11,6 +11,12 @@ public class MyList {
 
     private static SqlQuery query = new SqlQuery(); //ПРосто для запросов
 
+    /**
+     * Заполнение листа из коннекта с базой данных
+     * @param list - лист который надо заполнить
+     * @param connection - Уже готовый коннект к базе
+     * @throws SQLException
+     */
     public static void fillObservableList(ObservableList<Enterpise> list, Connection connection) throws SQLException
     {
         //Чистим лист
@@ -34,6 +40,36 @@ public class MyList {
             i++;
         }
     }
+
+
+    /**
+     * Добавление записи в лист
+     * @param list
+     * @param name
+     * @param bank
+     * @param contact
+     */
+    public static void addRecord(ObservableList<Enterpise> list, String name, String bank, String contact)
+    {
+        //считаем id
+        int id;
+
+        //Если записей нет, то ставим id = 0
+        if (list.isEmpty())
+        {
+            id = 0;
+        }
+        else
+        {
+            //Если уже есть записи,
+            //Считываем id предыдущей записи
+            id = list.get(list.size() - 1).getId();
+        }
+
+        //Добавляем запись в лист
+        list.add(new Enterpise(id + 1, name, bank, contact));
+    }
+
 
 
 }

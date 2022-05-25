@@ -1,5 +1,6 @@
 package com.example.databasetest;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -24,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,8 +103,12 @@ public class Controller {
     private SqlQuery query = new SqlQuery();
 
     //Выбор файлов через диалоговые окна
-    private FileChooser fileChooser = new FileChooser();
+//    private FileChooser fileChooser = new FileChooser();
 
+    //Выбор файлов через диалоговые окна
+    private FileOperations fileOperations = new FileOperations();
+
+    //Имя открытого файла, отображаемого на форме
     private StringProperty name_of_file = new SimpleStringProperty("DB_test.db");
 
 
@@ -112,49 +118,8 @@ public class Controller {
     @FXML
     void createFile()
     {
-        try
-        {
-            //закрываем предыдущее соединение
-            connection.close();
-
-            //Просто очищаем лист
-            list_Enterprise.clear();
-
-            //Очищаем имя открытого файла
-            name_of_file.setValue("");
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        /*
-        fileChooser.setTitle("Введите название файла и выберите дирректорию, где хотите создать файл");
-
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
-        String filename = String.valueOf(fileChooser.showSaveDialog(null));
-
-        try {
-
-            //Закрываем старое соединение
-            connection.close();
-
-            //Создаем новое
-            connection = DB_Connect.newConnect(filename);
-
-            //Создаем таблицу в новой базе
-            query.CreateTable(connection);
-
-            //Заполняем лист
-            MyList.fillObservableList(list_Enterprise, connection);
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-
-         */
-
+        //Вызываем функцию создания новой базы
+        connection = fileOperations.createFile(connection, name_of_file, list_Enterprise);
     }
 
     /**
@@ -163,39 +128,8 @@ public class Controller {
     @FXML
     void openFile()
     {
-        //Заголовок проводника
-        fileChooser.setTitle("Выберите файл, который хотите открыть");
-
-        //Инициализация начальной дирректории
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-
-        //Доступные разрешения файлов для выбора
-//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
-
-
-        //Показываем диалоговое окно, и запоминаем путь
-        String fileName = String.valueOf(fileChooser.showOpenDialog(null));
-
-
-        //Проверяем выбран ли файл
-        if (fileName != "null")
-        {
-            System.out.println("файл выбран");
-            try {
-                name_of_file.setValue(getFileName(fileName));
-                //Закрываем старое соединение
-                connection.close();
-
-                //И делаем новое, к выбранной базе данных
-                connection = DB_Connect.connect(fileName);
-
-                //Заполняем лист
-                MyList.fillObservableList(list_Enterprise, connection);
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        //Открываем файл, переопределяем имя файла, заполняем лист и возвращаем новый коннект
+        connection = fileOperations.openFile(connection, name_of_file, list_Enterprise);
     }
 
 
@@ -204,20 +138,8 @@ public class Controller {
      */
     public void saveFile()
     {
-        try
-        {
-            //Если коннекта нет, то вызываем диалоговое окно для сохранения
-            if (connection.isClosed())
-            {
-                saveFile_As();
-            }
-            else
-            {
-                query.send(connection, list_Enterprise);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        connection = fileOperations.saveFile(connection, name_of_file, list_Enterprise);
     }
 
     /**
@@ -225,32 +147,7 @@ public class Controller {
      */
     public void saveFile_As()
     {
-        //Заголовок диалогового окна
-        fileChooser.setTitle("Сохранить как");
-
-        //Инициализация начальной дирректории
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-
-        //Сохраняем путь и имя файла
-        String fileName = String.valueOf(fileChooser.showSaveDialog(null));
-
-        if (fileName != "null")
-        {
-            try {
-                name_of_file.setValue(getFileName(fileName));
-
-                //Создаем новый коннект
-                connection = DB_Connect.newConnect(fileName);
-
-                query.CreateTable(connection);
-                query.send(connection, list_Enterprise);
-
-            } catch (SQLException e) {
-                System.out.println(e);;
-            }
-
-            query.send(connection, list_Enterprise);
-        }
+        connection = fileOperations.saveFile_As(connection, name_of_file, list_Enterprise);
     }
 
 
@@ -260,7 +157,6 @@ public class Controller {
     @FXML
     void initialize()
     {
-
         //Делаем начальное значение надписи имени файла
         label_fileName.setText(name_of_file.get());
 
@@ -301,7 +197,7 @@ public class Controller {
         init_search();
 
         //Доступные разрешения файлов для выбора
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
+//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database", "*.db"));
 
         //Инициализируем слушатель для отслеживания имени открытого файла
         initFileNameListener();
@@ -420,49 +316,23 @@ public class Controller {
         //Если строки не пустые, то добавляем
         if (!name.isEmpty() && !bank.isEmpty() && !contact.isEmpty())
         {
-            System.out.println("не пустой");
-
-            //считаем id
-            int id;
-
-            //Если записей нет, то ставим id = 0
-            if (list_Enterprise.isEmpty())
-            {
-                id = 0;
-            }
-            else
-            {
-                //Если уже есть записи,
-                //Считываем id предыдущей записи
-                id = list_Enterprise.get(list_Enterprise.size() - 1).getId();
-            }
-
             //Добавляем запись в лист
-            list_Enterprise.add(new Enterpise(id + 1, name, bank, contact));
+            MyList.addRecord(list_Enterprise, name, bank, contact);
 
-            //Добавляем их
-//            try {
-//                //Добавление в базу
-//                connection.createStatement().executeUpdate(query.getInsert(name, bank, contact));
-//
-//                ResultSet rs = connection.createStatement().executeQuery("select * from Enterprise order by id desc limit 1");
-//
-//                rs.next();
-//                //Добавляю запись в observabellist
-//                list_Enterprise.add(new Enterpise
-//                        (
-//                                rs.getInt("id"),
-//                                rs.getString("name"),
-//                                rs.getString("banking_details"),
-//                                rs.getString("contact_person")
-//                        ));
-//
-//            } catch (SQLException e) {
-//                System.out.println(e);
-//            }
+            //Очищаем поля ввода
+            clearTextFields();
         }
+    }
 
 
+    /**
+     * Очищает поля ввода
+     */
+    private void clearTextFields()
+    {
+        textField_name.clear();
+        textField_contact_person.clear();
+        textField_bank_details.clear();
     }
 
     /**
@@ -541,11 +411,44 @@ public class Controller {
     }
 
 
-
-
-    public void closeProgram(ActionEvent actionEvent) {
-        System.out.println("exit");
+    /**
+     * Закрывает приложение
+     */
+    public void closeProgram()
+    {
+        if (showAlert() == true) {
+            Platform.exit();
+        }
     }
+
+    /**
+     * Выводит на экран предупреждение с тестом:
+     * "Вы уверены, что хотите закрыть приложение, все не сохраненные данные будут удалены"
+     * @return true - если да, false - если нет
+     */
+    private boolean showAlert()
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Закрыть программу");
+        alert.setHeaderText(null);
+        alert.setContentText("Вы уверены, что хотите закрыть приложение, все не сохраненные данные будут удалены");
+
+        ButtonType buttonYes = new ButtonType("Да");
+        ButtonType buttonNo = new ButtonType("Нет");
+
+        alert.getButtonTypes().setAll(buttonYes, buttonNo);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        ButtonType buttonType = result.get();
+
+        if (buttonYes.equals(buttonType)) {
+            return true;
+        } else if (buttonNo.equals(buttonType)) {
+            return false;
+        }
+        return false;
+    }
+
 
     /**
      * Возвращает имя файла
@@ -562,4 +465,20 @@ public class Controller {
         }
       return  str.nextToken();
     }
+
+    private EventHandler<WindowEvent> closeEventEventHandler = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent windowEvent) {
+            System.out.println("закрытие");
+            closeProgram();
+        }
+    };
+
+    private EventHandler<WindowEvent> getCloseEventEventHandler()
+    {
+        System.out.println("xxxxxx");
+        return closeEventEventHandler;
+    }
+
+
 }

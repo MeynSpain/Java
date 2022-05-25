@@ -125,30 +125,12 @@ public class SqlQuery {
             statement.executeUpdate("DROP table \"Enterprise\"");
             CreateTable(connection);
 
-//            preparedStatement = connection.prepareStatement("DELETE from \"Enterpise\"");
-//            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         }
 
         try
         {
-
-//            for (Enterpise enterpise: list)
-//            {
-//                String query = "INSERT INTO \"Enterprise\"(id, name, banking_details, contact_person) " +
-//                        "VALUES (?, ?, ?, ?)";
-//
-//                preparedStatement = connection.prepareStatement(query);
-//
-//                preparedStatement.setInt(1, enterpise.id);
-//                preparedStatement.setString(2, enterpise.name);
-//                preparedStatement.setString(3, enterpise.banking_details);
-//                preparedStatement.setString(4, enterpise.contact_person);
-//
-//
-//            }
-//            preparedStatement.executeUpdate();
 
             //Создаем запрос на вставку(к сожалению он не безопасный)
             String query = "INSERT INTO \"Enterprise\"(id, name, banking_details, contact_person) " +
