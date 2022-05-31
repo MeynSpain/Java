@@ -11,6 +11,9 @@ https://www.remove.bg/ru/upload
 ## Немного о том как парсить сайты  
 https://www.youtube.com/watch?v=sZgXUK5L3Ss
 
+## Шпаргалка по md   
+https://gist.github.com/Jekins/2bf2d0638163f1294637
+
 ## jsoup maven  
 https://mvnrepository.com/artifact/org.jsoup/jsoup/1.14.3  
 ## Online тест API  
