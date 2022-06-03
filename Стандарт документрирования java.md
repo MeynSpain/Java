@@ -93,3 +93,17 @@ class Product
     }
 }
 ```
+
+Вот такие подсказки выдает IntelliJ IDEA:  
+![image](https://user-images.githubusercontent.com/73224270/171822054-017f253d-92b2-432b-ae03-dd4df49cf46c.png)  
+![image](https://user-images.githubusercontent.com/73224270/171822097-14239ee7-27a7-4d4a-ae57-d8508aea90f3.png)  
+![image](https://user-images.githubusercontent.com/73224270/171822124-78182b83-19c9-4886-9d6b-413d06467d16.png)  
+![image](https://user-images.githubusercontent.com/73224270/171822163-830d28bc-bb83-4d81-9718-8ca9ec6c3da7.png)  
+![image](https://user-images.githubusercontent.com/73224270/171822196-be85ac3f-42de-47f4-95eb-923d62b288bb.png)  
+![image](https://user-images.githubusercontent.com/73224270/171822265-28f91105-82b8-4c05-aba8-e4c6630b532d.png)
+
+
+
+
+
+
