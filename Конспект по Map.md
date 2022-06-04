@@ -209,3 +209,5 @@ private final Map<String, String> ANSWERS_BY_PATTERNS = new HashMap<String, Stri
 
         }
 ```
+
+Добавить ссылки на источники
