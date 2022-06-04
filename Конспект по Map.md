@@ -210,4 +210,6 @@ private final Map<String, String> ANSWERS_BY_PATTERNS = new HashMap<String, Stri
         }
 ```
 
-Добавить ссылки на источники
+# Источники
+https://java-blog.ru/collections/map-v-java-s-primerami  
+https://github.com/qcha/JBook/blob/master/collections/map/intro.md
