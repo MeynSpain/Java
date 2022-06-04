@@ -100,10 +100,8 @@ class Product
 ![image](https://user-images.githubusercontent.com/73224270/171822124-78182b83-19c9-4886-9d6b-413d06467d16.png)  
 ![image](https://user-images.githubusercontent.com/73224270/171822163-830d28bc-bb83-4d81-9718-8ca9ec6c3da7.png)  
 ![image](https://user-images.githubusercontent.com/73224270/171822196-be85ac3f-42de-47f4-95eb-923d62b288bb.png)  
-![image](https://user-images.githubusercontent.com/73224270/171822265-28f91105-82b8-4c05-aba8-e4c6630b532d.png)
+![image](https://user-images.githubusercontent.com/73224270/171822265-28f91105-82b8-4c05-aba8-e4c6630b532d.png)  
 
-
-
-
-Добавить ссылки
+# Источник
+https://java-online.ru/java-javadoc.xhtml
 
